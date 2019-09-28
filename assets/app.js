@@ -75,15 +75,6 @@ $(document).ready(function () {
 });
 
 
-/*  NEED TO ADD THIS LATER WHEN I'M USING BUTTONS TO ADD TEAMS
-            for (var j = 0; j < teams.length; j++) {
-                var newTeam = $("<button>");
-                newTeam.addClass("team");
-                newTeam.attr("team-name", teams[i]); // set team name to team in array
-                newTeam.text(teams[i]);
-                $("#buttons-view").append(newTeam);
-            }
-*/
 
 
 
@@ -106,26 +97,3 @@ $(document).ready(function () {
 
 
 
-
-/*
-// This function handles events where the add movie button is clicked
-$("#add-movie").on("click", function (event) {
-                event.preventDefault();
-                // This line of code will grab the input from the textbox
-                var movie = $("#movie-input").val().trim();
-
-                // The movie from the textbox is then added to our array
-                movies.push(movie);
-
-                // Calling renderButtons which handles the processing of our movie array
-                renderButtons();
-
-            });
-
-        // Adding click event listeners to all elements with a class of "movie"
-        $(document).on("click", ".movie", displayMovieInfo); // ***THIS displayMovieInfo has the "this", and this would have referred to document, if we didn't have ".movie" there which says
-        // the thing that I am clicking is ONLY movie
-
-
-        // Calling the renderButtons function to display the intial buttons
-        renderButtons();*/
