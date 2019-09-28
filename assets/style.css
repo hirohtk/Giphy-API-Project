@@ -1,0 +1,10 @@
+#main-view {
+    width: 60rem;
+    height: 100rem;
+}
+
+#team-form {
+    float: right;
+    margin-right: 10rem;
+    margin-top: 3rem;
+}

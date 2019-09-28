@@ -5,8 +5,10 @@ var teams = ["Seahawks", "Packers", "Ravens", "Raiders", "Saints", "Bengals", "J
 
 $(document).ready(function () {
 
-    function displayGif() {
 
+
+    function displayGif() {
+        $("#buttons-view").empty();
         for (var i = 0; i < teams.length; i++) {
             console.log(i);
             var newTeam = $("<button>");
@@ -29,28 +31,47 @@ $(document).ready(function () {
 
             }).then(function (response) {
 
-                $("#buttons-view").empty();
+                $("#main-view").empty();
+
                 console.log(response);
 
-                var rating = response.data[0].rating;
+                for (i = 0; i <= 10; i++) {
 
-                var newP = $("<p>");
-                newP.text("Rating:" + rating);
-                
+                    var rating = response.data[i].rating;
 
-                var newGif = $("<img>");
-                newGif.addClass("addedGif");
-                newGif.attr("src", response.data[0].url);
+                    var newDiv = $("<div>");
+                    newDiv.attr("style", "height: 15rem; width: 25rem; float:left; margin-left: 1rem; margin-right: 1rem;")
 
-                $("#main-view").append(newP);
-                $("#main-view").append(newGif);
-                
+
+                    var newP = $("<p>");
+                    newP.text("Rating:" + rating);
+
+
+                    var newGif = $("<img>");
+                    newGif.addClass("addedGif");
+                    newGif.attr("src", response.data[i].images.fixed_height.url);
+
+
+                    newDiv.append(newP);
+                    newDiv.append(newGif);
+
+                    $("#main-view").append(newDiv);
+                }
             });
 
         });
 
     }
     displayGif();
+
+    $("#add-team").on("click", function () {
+        event.preventDefault();
+        var inputTeam = $("#team-input").val();
+        console.log(inputTeam);
+
+        teams.push(inputTeam);
+        displayGif();
+    });
 });
 
 
@@ -62,7 +83,7 @@ $(document).ready(function () {
                 newTeam.text(teams[i]);
                 $("#buttons-view").append(newTeam);
             }
-*/  
+*/
 
 
 
@@ -72,10 +93,10 @@ $(document).ready(function () {
 
 
 
-    
-            
-        
-    
+
+
+
+
 
 
 
