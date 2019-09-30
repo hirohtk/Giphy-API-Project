@@ -111,6 +111,13 @@ $(document).ready(function () {
             if (states.includes(properNounifiedInputTeam)) {
 
                 teams.push(properNounifiedInputTeam);
+
+                /*var newTeam = $("<button>");
+                newTeam.addClass("team");
+                newTeam.attr("team-name", properNounifiedInputTeam); 
+                newTeam.text(properNounifiedInputTeam);
+                $("#buttons-view").append(newTeam);*/         // DOES NOT WORK FOR SOME REASON- NEW BUTTON CREATED DOES NOT FOLLOW ON CLICK RULE BELOW
+
                 $("#team-input").val("");
                 refreshButtons(); // NEEDED THIS SO THAT YOU REFRESH YOUR BUTTONS AND APPLY ALL OF THE PREVIOUS FUNCTIONALITY ON THERE (I.E. ADDING TEAM NAME, ON CLICK FUNCTION, ETC,)
             }
