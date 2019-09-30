@@ -16,3 +16,7 @@
 .clickableGif {
     max-width: 20rem;
 }
+
+#notes {
+    max-width: 35rem;
+}

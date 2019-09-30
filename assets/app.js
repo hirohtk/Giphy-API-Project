@@ -86,6 +86,7 @@ var states = ["Alaska",
     "West Virginia",
     "Wyoming"]
 
+
 $(document).ready(function () {
 
     displayGif(); // runs the function which creates the initial array of teams 
@@ -96,30 +97,31 @@ $(document).ready(function () {
             event.preventDefault();
             var inputTeam = $("#team-input").val();
 
-            // HAD TO LOOK UP THIS LINE BELOW 
+            // HAD TO LOOK UP THIS LINE BELOW.  gets first letter of each word capitalized
             var properNounifiedInputTeam = inputTeam.split(' ').map(w => w[0].toUpperCase() + w.substr(1).toLowerCase()).join(' ');
+
             // BELOW WAS MY ATTEMPT TO GET FIRST LETTER OF EACH WORD CAPITALIZED, WITH THE REST LOWERCASE.  ONLY WORKED ON FIRST WORD 
-           // var inputTeamLowercase = inputTeam.toLowerCase();
-           // var inputTeamCapitalize = inputTeamLowercase.charAt(0).toUpperCase() + inputTeamLowercase.slice(1); // toUpperCase seems to delete the rest of the string after
-           // character at zero.  that's why inputTeam.slice(1) which is the rest of the string without the first letter is concatenated back on
-            
+            // var inputTeamLowercase = inputTeam.toLowerCase();
+            // var inputTeamCapitalize = inputTeamLowercase.charAt(0).toUpperCase() + inputTeamLowercase.slice(1); // toUpperCase seems to delete the rest of the string after
+            // character at zero.  that's why inputTeam.slice(1) which is the rest of the string without the first letter is concatenated back on
+
             console.log(properNounifiedInputTeam);
-            
+
 
             if (states.includes(properNounifiedInputTeam)) {
-            console.log("Valid State");
-            teams.push(properNounifiedInputTeam);
-            $("#team-input").val("");
-            refreshButtons(); // NEEDED THIS SO THAT YOU REFRESH YOUR BUTTONS AND APPLY ALL OF THE PREVIOUS FUNCTIONALITY ON THERE (I.E. ADDING TEAM NAME, ON CLICK FUNCTION, ETC,)
+
+                teams.push(properNounifiedInputTeam);
+                $("#team-input").val("");
+                refreshButtons(); // NEEDED THIS SO THAT YOU REFRESH YOUR BUTTONS AND APPLY ALL OF THE PREVIOUS FUNCTIONALITY ON THERE (I.E. ADDING TEAM NAME, ON CLICK FUNCTION, ETC,)
             }
             else {
-                console.log("not a state");
+
                 alert("Please enter a valid state");
                 $("#team-input").val("");
             }
-            
 
-            
+
+
         });
 
         function refreshButtons() {
@@ -133,44 +135,98 @@ $(document).ready(function () {
                 $("#buttons-view").append(newTeam);
             }
 
+
+
             $("button").on("click", function () {
 
-                var specificTeam = $(this).attr("team-name");
-                var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + specificTeam + "&api_key=e8WnTD7iI6NKElGDHHTY45ikLjLNFC7K&limit=10";
+                if ($(this).attr("clickedalready") === "true") {
+                    console.log("state has already been clicked");
+                    
+                    var specificTeam = $(this).attr("team-name"); 
+                                 
+                    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + specificTeam + "&api_key=e8WnTD7iI6NKElGDHHTY45ikLjLNFC7K&limit=20";
 
-                $.ajax({
+                    $.ajax({
 
-                    url: queryURL,
-                    method: "GET",
+                        url: queryURL,
+                        method: "GET",
 
-                }).then(function (response) {
+                    }).then(function (response) {
 
-                    $("#main-view").empty();
+                        $("#main-view").empty();
 
-                    for (i = 0; i <= 10; i++) {
+                        for (i = 0; i <= 20; i++) {
 
-                        var rating = response.data[i].rating;
+                            var rating = response.data[i].rating;
 
-                        var newDiv = $("<div>");
-                        newDiv.attr("style", "height: 15rem; width: 25rem; float:left; margin-left: 1rem; margin-right: 1rem;")
-                        newDiv.addClass("imageDiv");
+                            var newDiv = $("<div>");
+                            newDiv.attr("style", "height: 15rem; width: 25rem; float:left; margin-left: 1rem; margin-right: 1rem;")
+                            newDiv.addClass("imageDiv");
 
-                        var newP = $("<p>");
-                        newP.text("Rating:" + rating);
+                            var newP = $("<p>");
+                            newP.text("Rating:" + rating);
 
-                        var newGif = $("<img>");
-                        newGif.addClass("clickableGif");
-                        newGif.attr("state", "still");
-                        newGif.attr("src", response.data[i].images.fixed_height_still.url);
-                        newGif.attr("gifNumber", i); // since all the images are numbered in an array, the index is the unique identifier used for knowing which gif to substitute in for the resuming below
-                        newGif.attr("team-name", specificTeam); // doing this so pausing function below knows which team we're in so it can access the right team object for still/animated image
+                            var newGif = $("<img>");
+                            newGif.addClass("clickableGif");
+                            newGif.attr("state", "still");
+                            newGif.attr("src", response.data[i].images.fixed_height_still.url);
+                            newGif.attr("gifNumber", i); // since all the images are numbered in an array, the index is the unique identifier used for knowing which gif to substitute in for the resuming below
+                            newGif.attr("team-name", specificTeam); // doing this so pausing function below knows which team we're in so it can access the right team object for still/animated image
 
-                        newDiv.append(newP);
-                        newDiv.append(newGif);
+                            newDiv.append(newP);
+                            newDiv.append(newGif);
 
-                        $("#main-view").append(newDiv);
-                    }
-                });
+                            $("#main-view").append(newDiv);
+
+                        }
+                    });
+
+                }
+                else {
+                    console.log("state has not been clicked yet");
+                    var specificTeam = $(this).attr("team-name"); 
+                    
+                    $(this).attr("clickedalready", "true");
+                    $(this).attr("style", "background-color: darkgray;");
+                    
+                    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + specificTeam + "&api_key=e8WnTD7iI6NKElGDHHTY45ikLjLNFC7K&limit=10";
+
+                    $.ajax({
+
+                        url: queryURL,
+                        method: "GET",
+
+                    }).then(function (response) {
+
+                        $("#main-view").empty();
+
+                        for (i = 0; i <= 10; i++) {
+
+                            var rating = response.data[i].rating;
+
+                            var newDiv = $("<div>");
+                            newDiv.attr("style", "height: 15rem; width: 25rem; float:left; margin-left: 1rem; margin-right: 1rem;")
+                            newDiv.addClass("imageDiv");
+
+                            var newP = $("<p>");
+                            newP.text("Rating:" + rating);
+
+                            var newGif = $("<img>");
+                            newGif.addClass("clickableGif");
+                            newGif.attr("state", "still");
+                            newGif.attr("src", response.data[i].images.fixed_height_still.url);
+                            newGif.attr("gifNumber", i); // since all the images are numbered in an array, the index is the unique identifier used for knowing which gif to substitute in for the resuming below
+                            newGif.attr("team-name", specificTeam); // doing this so pausing function below knows which team we're in so it can access the right team object for still/animated image
+
+                            newDiv.append(newP);
+                            newDiv.append(newGif);
+
+                            $("#main-view").append(newDiv);
+
+                        }
+                    });
+                }
+
 
             });
         }
