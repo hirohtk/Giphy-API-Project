@@ -1,7 +1,90 @@
-// Initial array of things
-var teams = ["Seahawks", "Packers", "Ravens", "Raiders", "Saints", "Bengals", "Jaguars"];
+// Initial array of things  (used teams here because I originally wanted NFL teams, but changed mind and did states instead)
+var teams = ["Alaska",
+    "Alabama",
+    "Arkansas",
+    "California",
+    "Colorado",
+    "Florida",
+    "Hawaii",
+    "Illinois",
+    "Indiana",
+    "Louisiana",
+    "Massachusetts",
+    "Michigan",
+    "Minnesota",
+    "Mississippi",
+    "Montana",
+    "North Dakota",
+    "Nebraska",
+    "New Jersey",
+    "New Mexico",
+    "New York",
+    "Oklahoma",
+    "Oregon",
+    "Pennsylvania",
+    "South Carolina",
+    "South Dakota",
+    "Tennessee",
+    "Texas",
+    "Utah",
+    "Washington",
+    "Wisconsin"];
 
-
+var states = ["Alaska",
+    "Alabama",
+    "Arkansas",
+    "American Samoa",
+    "Arizona",
+    "California",
+    "Colorado",
+    "Connecticut",
+    "District of Columbia",
+    "Delaware",
+    "Florida",
+    "Georgia",
+    "Guam",
+    "Hawaii",
+    "Iowa",
+    "Idaho",
+    "Illinois",
+    "Indiana",
+    "Kansas",
+    "Kentucky",
+    "Louisiana",
+    "Massachusetts",
+    "Maryland",
+    "Maine",
+    "Michigan",
+    "Minnesota",
+    "Missouri",
+    "Mississippi",
+    "Montana",
+    "North Carolina",
+    " North Dakota",
+    "Nebraska",
+    "New Hampshire",
+    "New Jersey",
+    "New Mexico",
+    "Nevada",
+    "New York",
+    "Ohio",
+    "Oklahoma",
+    "Oregon",
+    "Pennsylvania",
+    "Puerto Rico",
+    "Rhode Island",
+    "South Carolina",
+    "South Dakota",
+    "Tennessee",
+    "Texas",
+    "Utah",
+    "Virginia",
+    "Virgin Islands",
+    "Vermont",
+    "Washington",
+    "Wisconsin",
+    "West Virginia",
+    "Wyoming"]
 
 $(document).ready(function () {
 
@@ -12,10 +95,27 @@ $(document).ready(function () {
         $("#add-team").on("click", function () {
             event.preventDefault();
             var inputTeam = $("#team-input").val();
+            var inputTeamLowercase = inputTeam.toLowerCase();
+            var inputTeamCapitalize = inputTeamLowercase.charAt(0).toUpperCase() + inputTeamLowercase.slice(1); // toUpperCase seems to delete the rest of the string after
+            // character at zero.  that's why inputTeam.slice(1) which is the rest of the string without the first letter is concatenated back on
+            
+            console.log(inputTeamCapitalize);
+            
 
-            teams.push(inputTeam);
-
+            if (states.includes(inputTeamCapitalize)) {
+            console.log("Valid State");
+            teams.push(inputTeamCapitalize);
+            $("#team-input").val("");
             refreshButtons(); // NEEDED THIS SO THAT YOU REFRESH YOUR BUTTONS AND APPLY ALL OF THE PREVIOUS FUNCTIONALITY ON THERE (I.E. ADDING TEAM NAME, ON CLICK FUNCTION, ETC,)
+            }
+            else {
+                console.log("not a state");
+                alert("Please enter a valid state");
+                $("#team-input").val("");
+            }
+            
+
+            
         });
 
         function refreshButtons() {
@@ -49,6 +149,7 @@ $(document).ready(function () {
 
                         var newDiv = $("<div>");
                         newDiv.attr("style", "height: 15rem; width: 25rem; float:left; margin-left: 1rem; margin-right: 1rem;")
+                        newDiv.addClass("imageDiv");
 
                         var newP = $("<p>");
                         newP.text("Rating:" + rating);
