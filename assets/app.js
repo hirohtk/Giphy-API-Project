@@ -95,16 +95,20 @@ $(document).ready(function () {
         $("#add-team").on("click", function () {
             event.preventDefault();
             var inputTeam = $("#team-input").val();
-            var inputTeamLowercase = inputTeam.toLowerCase();
-            var inputTeamCapitalize = inputTeamLowercase.charAt(0).toUpperCase() + inputTeamLowercase.slice(1); // toUpperCase seems to delete the rest of the string after
-            // character at zero.  that's why inputTeam.slice(1) which is the rest of the string without the first letter is concatenated back on
+
+            // HAD TO LOOK UP THIS LINE BELOW 
+            var properNounifiedInputTeam = inputTeam.split(' ').map(w => w[0].toUpperCase() + w.substr(1).toLowerCase()).join(' ');
+            // BELOW WAS MY ATTEMPT TO GET FIRST LETTER OF EACH WORD CAPITALIZED, WITH THE REST LOWERCASE.  ONLY WORKED ON FIRST WORD 
+           // var inputTeamLowercase = inputTeam.toLowerCase();
+           // var inputTeamCapitalize = inputTeamLowercase.charAt(0).toUpperCase() + inputTeamLowercase.slice(1); // toUpperCase seems to delete the rest of the string after
+           // character at zero.  that's why inputTeam.slice(1) which is the rest of the string without the first letter is concatenated back on
             
-            console.log(inputTeamCapitalize);
+            console.log(properNounifiedInputTeam);
             
 
-            if (states.includes(inputTeamCapitalize)) {
+            if (states.includes(properNounifiedInputTeam)) {
             console.log("Valid State");
-            teams.push(inputTeamCapitalize);
+            teams.push(properNounifiedInputTeam);
             $("#team-input").val("");
             refreshButtons(); // NEEDED THIS SO THAT YOU REFRESH YOUR BUTTONS AND APPLY ALL OF THE PREVIOUS FUNCTIONALITY ON THERE (I.E. ADDING TEAM NAME, ON CLICK FUNCTION, ETC,)
             }
