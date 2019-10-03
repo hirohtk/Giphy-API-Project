@@ -158,13 +158,13 @@ $(document).ready(function () {
                         url: queryURL,
                         method: "GET",
 
-                    }).then(function (response) {
-
+                    }).then(function (response2) {
+                        console.log(response2);
                         $("#main-view").empty();
 
                         for (i = 0; i <= 20; i++) {
 
-                            var rating = response.data[i].rating;
+                            var rating = response2.data[i].rating;
 
                             var newDiv = $("<div>");
                             newDiv.attr("style", "height: 15rem; width: 25rem; float:left; margin-left: 1rem; margin-right: 1rem;")
@@ -176,7 +176,7 @@ $(document).ready(function () {
                             var newGif = $("<img>");
                             newGif.addClass("clickableGif");
                             newGif.attr("state", "still");
-                            newGif.attr("src", response.data[i].images.fixed_height_still.url);
+                            newGif.attr("src", response2.data[i].images.fixed_height_still.url);
                             newGif.attr("gifNumber", i); // since all the images are numbered in an array, the index is the unique identifier used for knowing which gif to substitute in for the resuming below
                             newGif.attr("team-name", specificTeam); // doing this so pausing function below knows which team we're in so it can access the right team object for still/animated image
 
@@ -204,7 +204,7 @@ $(document).ready(function () {
                         method: "GET",
 
                     }).then(function (response) {
-
+                        console.log(response);
                         $("#main-view").empty();
 
                         for (i = 0; i <= 10; i++) {
@@ -252,7 +252,7 @@ $(document).ready(function () {
 
             var carryToTheResponseBelow = $(this); // *Note A :  had to store this in a variable because AJAX seems to have changed what THIS is
 
-            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + specificTeam + "&api_key=e8WnTD7iI6NKElGDHHTY45ikLjLNFC7K&limit=10";
+            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + specificTeam + "&api_key=e8WnTD7iI6NKElGDHHTY45ikLjLNFC7K&limit=20";
 
             $.ajax({
 
@@ -266,6 +266,8 @@ $(document).ready(function () {
                 if (carryToTheResponseBelow.attr("state") === "still") { // *Note A: did THIS become something else after AJAX?
                     console.log("animating this gif");
                     console.log(carryToTheResponseBelow.attr("gifNumber"));
+                    
+                    
 
                     carryToTheResponseBelow.attr("state", "animating");
                     carryToTheResponseBelow.attr("src", response.data[carryToTheResponseBelow.attr("gifNumber")].images.fixed_height.url);
