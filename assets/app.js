@@ -236,13 +236,23 @@ $(document).ready(function () {
 
                         }
                     });
+
                 }
 
-
+                /*var favoritesButton = $("<button>");
+                favoritesButton.text("Favorite this state?");
+                favoritesButton.addClass("favoritesButton");
+                favoritesButton.appendTo($(this));
+                $(".favoritesButton").on("click", function clearFavoriteButton() {
+                    $(this).remove();
+                });*/
+                    
             });
         }
-        
-        
+
+
+
+
 
         refreshButtons();
 
