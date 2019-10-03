@@ -112,14 +112,17 @@ $(document).ready(function () {
 
                 teams.push(properNounifiedInputTeam);
 
-                /*var newTeam = $("<button>");
+                //
+                var newTeam = $("<button>");
                 newTeam.addClass("team");
-                newTeam.attr("team-name", properNounifiedInputTeam); 
+                newTeam.attr("team-name", properNounifiedInputTeam);
                 newTeam.text(properNounifiedInputTeam);
-                $("#buttons-view").append(newTeam);*/         // DOES NOT WORK FOR SOME REASON- NEW BUTTON CREATED DOES NOT FOLLOW ON CLICK RULE BELOW
-
+                $("#buttons-view").append(newTeam);         // DOES NOT WORK FOR SOME REASON- NEW BUTTON CREATED DOES NOT FOLLOW ON CLICK RULE BELOW
+                //
                 $("#team-input").val("");
-                refreshButtons(); // NEEDED THIS SO THAT YOU REFRESH YOUR BUTTONS AND APPLY ALL OF THE PREVIOUS FUNCTIONALITY ON THERE (I.E. ADDING TEAM NAME, ON CLICK FUNCTION, ETC,)
+                buttonClicking();
+
+                //refreshButtons(); // NEEDED THIS SO THAT YOU REFRESH YOUR BUTTONS AND APPLY ALL OF THE PREVIOUS FUNCTIONALITY ON THERE (I.E. ADDING TEAM NAME, ON CLICK FUNCTION, ETC,)
             }
             else {
 
@@ -141,16 +144,17 @@ $(document).ready(function () {
                 newTeam.text(teams[i]);
                 $("#buttons-view").append(newTeam);
             }
+            buttonClicking();
+        }
 
-
-
-            $("button").on("click", function () {
+        function buttonClicking() {
+            $("button").on("click", function buttonClick() {
 
                 if ($(this).attr("clickedalready") === "true") {
                     console.log("state has already been clicked");
-                    
-                    var specificTeam = $(this).attr("team-name"); 
-                                 
+
+                    var specificTeam = $(this).attr("team-name");
+
                     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + specificTeam + "&api_key=e8WnTD7iI6NKElGDHHTY45ikLjLNFC7K&limit=20";
 
                     $.ajax({
@@ -158,13 +162,13 @@ $(document).ready(function () {
                         url: queryURL,
                         method: "GET",
 
-                    }).then(function (response2) {
-                        console.log(response2);
+                    }).then(function (response) {
+                        console.log(response);
                         $("#main-view").empty();
 
                         for (i = 0; i <= 20; i++) {
 
-                            var rating = response2.data[i].rating;
+                            var rating = response.data[i].rating;
 
                             var newDiv = $("<div>");
                             newDiv.attr("style", "height: 15rem; width: 25rem; float:left; margin-left: 1rem; margin-right: 1rem;")
@@ -176,7 +180,7 @@ $(document).ready(function () {
                             var newGif = $("<img>");
                             newGif.addClass("clickableGif");
                             newGif.attr("state", "still");
-                            newGif.attr("src", response2.data[i].images.fixed_height_still.url);
+                            newGif.attr("src", response.data[i].images.fixed_height_still.url);
                             newGif.attr("gifNumber", i); // since all the images are numbered in an array, the index is the unique identifier used for knowing which gif to substitute in for the resuming below
                             newGif.attr("team-name", specificTeam); // doing this so pausing function below knows which team we're in so it can access the right team object for still/animated image
 
@@ -191,11 +195,11 @@ $(document).ready(function () {
                 }
                 else {
                     console.log("state has not been clicked yet");
-                    var specificTeam = $(this).attr("team-name"); 
-                    
+                    var specificTeam = $(this).attr("team-name");
+
                     $(this).attr("clickedalready", "true");
                     $(this).attr("style", "background-color: darkgray;");
-                    
+
                     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + specificTeam + "&api_key=e8WnTD7iI6NKElGDHHTY45ikLjLNFC7K&limit=10";
 
                     $.ajax({
@@ -237,6 +241,8 @@ $(document).ready(function () {
 
             });
         }
+        
+        
 
         refreshButtons();
 
@@ -266,8 +272,8 @@ $(document).ready(function () {
                 if (carryToTheResponseBelow.attr("state") === "still") { // *Note A: did THIS become something else after AJAX?
                     console.log("animating this gif");
                     console.log(carryToTheResponseBelow.attr("gifNumber"));
-                    
-                    
+
+
 
                     carryToTheResponseBelow.attr("state", "animating");
                     carryToTheResponseBelow.attr("src", response.data[carryToTheResponseBelow.attr("gifNumber")].images.fixed_height.url);
